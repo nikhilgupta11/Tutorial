@@ -1,0 +1,77 @@
+@extends('Front/Layouts/Layout/HomeLayout')
+@section('HomeContent')
+<table class="table" style="width:100%">
+    <thead>
+        <tr>
+            <th scope="col" style="width:9%">Sr. No.</th>
+            <th scope="col" style="width:40%">Post(Contractual basis)</th>
+            <th scope="col" style="width:40%">Eligibility</th>
+            <th scope="col" style="width:11%">Apply Link</th>
+        </tr>
+    </thead>
+    <?php
+
+    use Carbon\Carbon;
+    ?>
+    @if(count($data)>0)
+    @foreach($data as $index=>$job)
+    <tbody>
+        <tr>
+            <td></td>
+            <td>@foreach($department as $depart)
+                @if($depart->id == $job->department_id)
+                <p><b>{{$depart->name}}</b></p>
+                @endif
+                @endforeach
+            </td>
+        </tr>
+        @if(Carbon::parse($job->end_date)->gte(Carbon::now()->format('Y-m-d')))
+        <tr>
+            <td class=" lineTable"><b>{{ $index+1 }}</b></td>
+            <td class="lineTable"><b>{{$job->job_title}}</b></td>
+            <td class="lineTable"><b>{{$job->description}}</b></td>
+            <td class="lineTable"> <a href="{{ route('formSubmit', $job->id) }}" class="btn btn-primary">Apply Now</a></td>
+        </tr>
+        @endif
+    </tbody>
+    @endforeach
+    @else
+    <tbody>
+        <tr>
+            <td></td>
+            <td class="textCenter">
+                <p><b>No Job Available.</b></p>
+            </td>
+        </tr>
+    </tbody>
+    @endif
+</table>
+<!-- HOME END-->
+<style>
+    table.table {
+        margin-top: 160px;
+        border: 2px solid black;
+
+    }
+
+    .textCenter {
+        text-align: center;
+    }
+
+    .lineTable {
+        border: 2px solid black;
+    }
+
+    .table td {
+        border-top: 2px solid black;
+    }
+
+    .table thead th {
+        border: 2px solid black;
+    }
+
+    .deparmetntName {
+        width: 100%;
+    }
+</style>
+@endsection('HomeContent')
